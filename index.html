@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Pdf Reader – Smart PDF Reading & Conversion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --bg-gradient: none;
+      --surface: #ffffff;
+      --surface-hover: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --radius-lg: 20px;
+      /* Bright blue for header & footer */
+      --top-bottom-bg: #2563eb;
+      --top-bottom-text: #ffffff;
+      --top-bottom-text-muted: rgba(255, 255, 255, 0.85);
+      /* Glass - light theme */
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-bg-50: rgba(255, 255, 255, 0.6);
+      --glass-bg-35: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(0, 0, 0, 0.06);
+      --glass-blur: 20px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg) var(--bg-gradient);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    /* Header - bright blue, full width */
+    .header {
+      width: 100%;
+      background: var(--top-bottom-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--top-bottom-text);
+      text-decoration: none;
+    }
+    .logo:hover { color: var(--top-bottom-text); }
+    .logo-img {
+      height: 2rem;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .logo-img-lg {
+      height: 5rem;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header .nav a {
+      color: var(--top-bottom-text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .header .nav a:hover {
+      color: var(--top-bottom-text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      border: none;
+      font-family: inherit;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
+    }
+
+    .header .btn-ghost {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--top-bottom-text-muted);
+    }
+    .header .btn-ghost:hover {
+      color: var(--top-bottom-text);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-primary {
+      background: rgba(37, 99, 235, 0.9);
+      color: white;
+    }
+
+    /* 右上角下载按钮：白底蓝字，确保可读 */
+    .header .btn-primary,
+    .header .nav .btn-primary {
+      background: rgba(255, 255, 255, 0.98);
+      color: #2563eb !important;
+    }
+    .header .btn-primary:hover,
+    .header .nav .btn-primary:hover {
+      background: #fff;
+      color: #1d4ed8 !important;
+    }
+    .header .btn-primary .btn-icon,
+    .header .nav .btn-primary .btn-icon,
+    .header .btn-primary svg,
+    .header .nav .btn-primary svg {
+      color: #2563eb !important;
+      fill: #2563eb !important;
+    }
+    .header .btn-primary:hover .btn-icon,
+    .header .btn-primary:hover svg,
+    .header .nav .btn-primary:hover svg {
+      color: #1d4ed8 !important;
+      fill: #1d4ed8 !important;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn .btn-icon {
+      width: 1.25em;
+      height: 1.25em;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Banner - 512×250 海报区，左侧文字重排 */
+    .banner {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 2rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      min-height: 0;
+    }
+
+    .banner-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .banner-content h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .banner-content p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0;
+      max-width: 100%;
+      line-height: 1.5;
+    }
+
+    .banner-content .btn-primary {
+      padding: 0.65rem 1.25rem;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+      align-self: flex-start;
+    }
+
+    .banner-visual {
+      aspect-ratio: 512/250;
+      background: var(--glass-bg-50);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(37, 99, 235, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .banner-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .app-mockup {
+      width: 85%;
+      height: 85%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .app-mockup .icon {
+      width: 64px;
+      height: 64px;
+      background: var(--accent);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+
+    .app-mockup .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .app-mockup-logo {
+      gap: 0.75rem;
+    }
+    .app-mockup-logo .logo-img-lg {
+      margin-bottom: 0.25rem;
+    }
+
+    .app-mockup .sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Feature shortcuts - 50% transparency衬底 */
+    .features-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+    }
+
+    .features-bar-inner {
+      background: var(--glass-bg-50);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .features-bar h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--glass-bg-50);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.15);
+    }
+    .feature-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .feature-card .icon-wrap {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .feature-card:nth-child(1) .icon-wrap { background: rgba(37, 99, 235, 0.15); }
+    .feature-card:nth-child(2) .icon-wrap { background: rgba(34, 197, 94, 0.15); }
+    .feature-card:nth-child(3) .icon-wrap { background: rgba(249, 115, 22, 0.15); }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Feature details */
+    .feature-details {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    .feature-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 4.5rem;
+      scroll-margin-top: 2rem;
+    }
+    .feature-detail:last-child {
+      margin-bottom: 0;
+    }
+
+    .feature-detail:nth-child(even) .detail-content {
+      order: 2;
+    }
+
+    .feature-detail:nth-child(even) .detail-visual {
+      order: 1;
+    }
+
+    .feature-detail .detail-visual {
+      aspect-ratio: 4/3;
+      background: var(--glass-bg-35);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .feature-detail .detail-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feature-detail .detail-visual .placeholder {
+      width: 60%;
+      height: 60%;
+      background: linear-gradient(135deg, var(--surface-hover) 0%, var(--border) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--text-muted);
+    }
+
+    .detail-content h3 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .detail-content p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .detail-content ul {
+      list-style: none;
+    }
+
+    .detail-content li {
+      padding: 0.4rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      color: var(--text-muted);
+    }
+
+    .detail-content li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Footer - bright blue, full width */
+    .footer {
+      width: 100%;
+      background: var(--top-bottom-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4rem 2rem 2rem;
+    }
+    .footer .logo,
+    .footer .footer-brand p,
+    .footer .footer-col a,
+    .footer .footer-col h4,
+    .footer .footer-legal p,
+    .footer .footer-legal.copyright {
+      color: var(--top-bottom-text-muted);
+    }
+    .footer .logo:hover,
+    .footer .footer-col a:hover {
+      color: var(--top-bottom-text);
+    }
+    .footer .footer-download .btn-primary {
+      background: rgba(255, 255, 255, 0.98);
+      color: #2563eb !important;
+    }
+    .footer .footer-download .btn-primary:hover {
+      background: #fff;
+      color: #1d4ed8 !important;
+    }
+    .footer .footer-download .btn-primary svg {
+      fill: #2563eb !important;
+    }
+    .footer .footer-download .btn-primary:hover svg {
+      fill: #1d4ed8 !important;
+    }
+    .footer .footer-legal {
+      border-top-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand .logo {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 320px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-col h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-col a {
+      display: block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a:hover {
+      color: var(--text);
+    }
+
+    .footer-download {
+      text-align: right;
+    }
+
+    .footer-download .btn-primary {
+      padding: 0.8rem 1.5rem;
+    }
+
+    /* Ensure footer text is visible on blue (override later rules) */
+    .footer .footer-brand p,
+    .footer .footer-col h4,
+    .footer .footer-col a,
+    .footer .footer-legal p,
+    .footer .footer-legal.copyright {
+      color: var(--top-bottom-text-muted);
+    }
+    .footer .footer-col a:hover {
+      color: var(--top-bottom-text);
+    }
+
+    /* Feedback modal */
+    .feedback-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .feedback-modal-overlay.is-open {
+      display: flex;
+    }
+    .feedback-modal {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+    }
+    .feedback-modal h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+    .feedback-modal .form-group {
+      margin-bottom: 1rem;
+    }
+    .feedback-modal label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--text-muted);
+    }
+    .feedback-modal input,
+    .feedback-modal textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .feedback-modal input::placeholder,
+    .feedback-modal textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    .feedback-modal input:focus,
+    .feedback-modal textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .feedback-modal textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .feedback-modal .error-msg {
+      font-size: 0.85rem;
+      color: #f87171;
+      margin-top: 0.35rem;
+      display: none;
+    }
+    .feedback-modal .error-msg.is-visible {
+      display: block;
+    }
+    .feedback-modal .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 1.25rem;
+    }
+    .feedback-modal .modal-actions .btn {
+      min-width: 90px;
+    }
+
+    .footer-legal {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .footer-legal p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      max-width: 800px;
+    }
+
+    .footer-legal .copyright {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 900px) {
+      .banner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .banner-content {
+        align-items: center;
+      }
+
+      .banner-content .btn-primary {
+        align-self: center;
+      }
+
+      .banner-content p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .feature-detail {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-detail:nth-child(even) .detail-content,
+      .feature-detail:nth-child(even) .detail-visual {
+        order: unset;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .nav {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .feature-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .banner-content h1 {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div class="page-content">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/logo.png" alt="AI Pdf Reader" class="logo-img" width="80" height="32" />
+        <span>AI Pdf Reader</span>
+      </a>
+      <nav class="nav">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <button type="button" class="btn btn-ghost" id="feedback-btn" aria-haspopup="dialog" aria-expanded="false">Feedback</button>
+        <a href="#download" class="btn btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
+          </svg>
+          Download
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="banner">
+    <div class="banner-content">
+      <h1>Redefine PDF with AI</h1>
+      <p>Scan, convert, and read in one place. Smart recognition and smooth reading for more efficient document handling.</p>
+      <a href="#download" class="btn btn-primary">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
+      </svg>
+      Download Now
+    </a>
+    </div>
+    <div class="banner-visual">
+      <img src="assets/banner.jpg" alt="All Document Reader" width="512" height="250" />
+    </div>
+  </section>
+
+  <!-- Feature shortcuts -->
+  <section class="features-bar">
+    <div class="features-bar-inner">
+    <h2>Core Features</h2>
+    <div class="feature-cards">
+      <a href="#feature-scan" class="feature-card">
+        <div class="icon-wrap">📷</div>
+        <h3>Scan to PDF</h3>
+        <p>Capture or pick images and create PDFs in one tap</p>
+      </a>
+      <a href="#feature-convert" class="feature-card">
+        <div class="icon-wrap">📄</div>
+        <h3>Convert to PDF</h3>
+        <p>Turn Word, images, and more into PDF quickly</p>
+      </a>
+      <a href="#feature-view" class="feature-card">
+        <div class="icon-wrap">👁</div>
+        <h3>PDF Viewer</h3>
+        <p>Smooth reading, annotations, and search</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- Feature details -->
+  <section class="feature-details">
+    <article id="feature-scan" class="feature-detail">
+      <div class="detail-visual">
+        <img src="assets/scanpdf.JPG" alt="Scan Images to PDF" width="600" height="450" />
+      </div>
+      <div class="detail-content">
+        <h3>Scan Images to PDF</h3>
+        <p>Use your phone or tablet to capture documents, business cards, or notes, or select multiple images from your gallery. AI Pdf Reader crops, enhances, and merges them into one clear PDF.</p>
+        <ul>
+          <li>Auto edge detection and perspective correction</li>
+          <li>Multi-page merge and reorder</li>
+          <li>Black & white or color, smaller file size</li>
+        </ul>
+      </div>
+    </article>
+
+    <article id="feature-convert" class="feature-detail">
+      <div class="detail-visual">
+        <img src="assets/Convert.png" alt="Convert Other Files to PDF" width="600" height="450" />
+      </div>
+      <div class="detail-content">
+        <h3>Convert Other Files to PDF</h3>
+        <p>Convert Word, Excel, images, and other common formats to PDF in one tap. Layout and fonts are preserved for easy sharing and archiving.</p>
+        <ul>
+          <li>Supports Word, images, web pages, and more</li>
+          <li>Batch conversion to save time</li>
+          <li>Preview and share right after converting</li>
+        </ul>
+      </div>
+    </article>
+
+    <article id="feature-view" class="feature-detail">
+      <div class="detail-visual">
+        <img src="assets/pdfview.png" alt="PDF Viewer" width="600" height="450" />
+      </div>
+      <div class="detail-content">
+        <h3>PDF Viewer</h3>
+        <p>Built-in high-performance PDF reader with smooth paging, zoom, table of contents, and full-text search. Add annotations and highlights.</p>
+        <ul>
+          <li>Fast open for large files, smooth scrolling</li>
+          <li>Table of contents, bookmarks, and full-text search</li>
+          <li>Annotations, highlights, and synced notes</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="download">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="assets/logo.png" alt="AI Pdf Reader" class="logo-img" width="80" height="32" />
+            <span>AI Pdf Reader</span>
+          </a>
+          <p>AI Pdf Reader is an all-in-one tool for scanning to PDF, converting files to PDF, and reading PDFs—helping you handle documents efficiently on mobile.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+          <div class="footer-download">
+            <a href="#" class="btn btn-primary">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
+              </svg>
+              Download App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-legal copyright">© 2025 AI Pdf Reader. All rights reserved.</p>
+    </div>
+  </footer>
+  </div>
+
+  <!-- Feedback modal -->
+  <div class="feedback-modal-overlay" id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" aria-hidden="true">
+    <div class="feedback-modal" id="feedback-dialog">
+      <h3 id="feedback-modal-title">Feedback</h3>
+      <form id="feedback-form" novalidate>
+        <div class="form-group">
+          <label for="feedback-email">Contact (Email)</label>
+          <input type="email" id="feedback-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          <p class="error-msg" id="feedback-email-error" role="alert"></p>
+        </div>
+        <div class="form-group">
+          <label for="feedback-message">Feedback</label>
+          <textarea id="feedback-message" name="message" placeholder="Your feedback..." rows="4"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost feedback-modal-close">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var canvas = document.getElementById('particle-canvas');
+      var ctx = canvas.getContext('2d');
+      var particles = [];
+      var particleCount = 160;
+      var linkDistance = 180;
+      var mouse = { x: null, y: null, r: 160 };
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles();
+      }
+
+      function initParticles() {
+        particles = [];
+        for (var i = 0; i < particleCount; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            r: Math.random() * 1.8 + 1.2
+          });
+        }
+      }
+
+      function drawParticle(p) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(100, 116, 139, ' + (0.25 + Math.random() * 0.3) + ')';
+        ctx.fill();
+      }
+
+      function drawLine(p1, p2, d) {
+        var opacity = (1 - d / linkDistance) * 0.35;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = 'rgba(100, 116, 139, ' + opacity + ')';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          p.x = Math.max(0, Math.min(canvas.width, p.x));
+          p.y = Math.max(0, Math.min(canvas.height, p.y));
+
+          drawParticle(p);
+
+          for (var j = i + 1; j < particles.length; j++) {
+            var dx = particles[j].x - p.x;
+            var dy = particles[j].y - p.y;
+            var d = Math.sqrt(dx * dx + dy * dy);
+            if (d < linkDistance) drawLine(p, particles[j], d);
+          }
+
+          if (mouse.x !== null && mouse.y !== null) {
+            var mdx = mouse.x - p.x;
+            var mdy = mouse.y - p.y;
+            var md = Math.sqrt(mdx * mdx + mdy * mdy);
+            if (md < mouse.r) drawLine(p, { x: mouse.x, y: mouse.y }, md);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', function (e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      window.addEventListener('mouseleave', function () {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      resize();
+      animate();
+    })();
+
+    (function () {
+      var overlay = document.getElementById('feedback-modal');
+      var openBtn = document.getElementById('feedback-btn');
+      var form = document.getElementById('feedback-form');
+      var emailInput = document.getElementById('feedback-email');
+      var emailError = document.getElementById('feedback-email-error');
+      var closeBtn = overlay && overlay.querySelector('.feedback-modal-close');
+
+      function openModal() {
+        if (!overlay) return;
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+        emailError.classList.remove('is-visible');
+        emailError.textContent = '';
+        document.body.style.overflow = 'hidden';
+        if (emailInput) emailInput.focus();
+      }
+
+      function closeModal() {
+        if (!overlay) return;
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      function isValidEmail(value) {
+        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return value && re.test(value.trim());
+      }
+
+      if (openBtn) openBtn.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (overlay) overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = emailInput ? emailInput.value.trim() : '';
+          emailError.textContent = '';
+          emailError.classList.remove('is-visible');
+          if (!isValidEmail(email)) {
+            emailError.textContent = '请检查邮箱格式';
+            emailError.classList.add('is-visible');
+            if (emailInput) emailInput.focus();
+            return;
+          }
+          closeModal();
+          form.reset();
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay && overlay.classList.contains('is-open')) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
