@@ -4,6 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Pdf Reader – Smart PDF Reading & Conversion</title>
+  <meta name="description" content="AI Pdf Reader is an all-in-one PDF tool for Android. Scan documents to PDF, convert Word/images to PDF, and enjoy a smooth reading experience with annotations." />
+  <meta name="keywords" content="PDF reader, PDF scanner, PDF converter, document viewer, PDF editor, Android PDF app" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Pdf Reader – Smart PDF Reading & Conversion" />
+  <meta property="og:description" content="Scan, convert, and read PDFs in one place. Smart recognition and smooth reading for efficient document handling." />
+  <meta property="og:image" content="assets/banner.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Pdf Reader – Smart PDF Reading & Conversion" />
+  <meta name="twitter:description" content="Scan, convert, and read PDFs in one place." />
+  <meta name="twitter:image" content="assets/banner.jpg" />
+  <!-- JSON-LD Structured Data for App -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PDF Reader - All Document Viewer",
+    "operatingSystem": "Android",
+    "applicationCategory": "UtilitiesApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "url": "https://play.google.com/store/apps/details?id=com.ai.pdf.reader.android.app.year2026",
+    "description": "All-in-one PDF tool: scan, convert, read, annotate and manage PDF documents on your Android device."
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
@@ -68,13 +94,20 @@
       min-height: 100vh;
     }
 
-    /* Header - bright blue, full width */
+    /* Header - bright blue, full width, sticky */
     .header {
       width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 50;
       background: var(--top-bottom-bg);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      transition: box-shadow 0.3s;
+    }
+    .header.is-scrolled {
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
     }
     .header-inner {
       display: flex;
@@ -700,6 +733,69 @@
       opacity: 0.8;
     }
 
+    /* Google Play badge */
+    .gp-badge { display: inline-block; transition: opacity 0.2s; }
+    .gp-badge:hover { opacity: 0.85; }
+    .gp-badge img { height: 52px; width: auto; display: block; }
+    .gp-badge-sm img { height: 40px; }
+
+    /* Back to top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 40;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    }
+    .back-to-top.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--accent-hover);
+    }
+    .back-to-top svg { width: 20px; height: 20px; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #10b981;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+      z-index: 200;
+      white-space: nowrap;
+    }
+    .toast.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
     @media (max-width: 900px) {
       .banner {
         grid-template-columns: 1fr;
@@ -765,7 +861,7 @@
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
         <button type="button" class="btn btn-ghost" id="feedback-btn" aria-haspopup="dialog" aria-expanded="false">Feedback</button>
-        <a href="#download" class="btn btn-primary">
+        <a href="https://play.google.com/store/apps/details?id=com.ai.pdf.reader.android.app.year2026" target="_blank" rel="noopener" class="btn btn-primary">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
           </svg>
@@ -780,12 +876,9 @@
     <div class="banner-content">
       <h1>Redefine PDF with AI</h1>
       <p>Scan, convert, and read in one place. Smart recognition and smooth reading for more efficient document handling.</p>
-      <a href="#download" class="btn btn-primary">
-      <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
-      </svg>
-      Download Now
-    </a>
+      <a href="https://play.google.com/store/apps/details?id=com.ai.pdf.reader.android.app.year2026" target="_blank" rel="noopener" class="gp-badge" aria-label="Get it on Google Play">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
     </div>
     <div class="banner-visual">
       <img src="assets/banner.jpg" alt="All Document Reader" width="512" height="250" />
@@ -820,7 +913,7 @@
   <section class="feature-details">
     <article id="feature-scan" class="feature-detail">
       <div class="detail-visual">
-        <img src="assets/scanpdf.JPG" alt="Scan Images to PDF" width="600" height="450" />
+        <img src="assets/scanpdf.jpg" alt="Scan Images to PDF" width="600" height="450" loading="lazy" />
       </div>
       <div class="detail-content">
         <h3>Scan Images to PDF</h3>
@@ -835,7 +928,7 @@
 
     <article id="feature-convert" class="feature-detail">
       <div class="detail-visual">
-        <img src="assets/Convert.png" alt="Convert Other Files to PDF" width="600" height="450" />
+        <img src="assets/Convert.png" alt="Convert Other Files to PDF" width="600" height="450" loading="lazy" />
       </div>
       <div class="detail-content">
         <h3>Convert Other Files to PDF</h3>
@@ -850,7 +943,7 @@
 
     <article id="feature-view" class="feature-detail">
       <div class="detail-visual">
-        <img src="assets/pdfview.png" alt="PDF Viewer" width="600" height="450" />
+        <img src="assets/pdfview.png" alt="PDF Viewer" width="600" height="450" loading="lazy" />
       </div>
       <div class="detail-content">
         <h3>PDF Viewer</h3>
@@ -865,7 +958,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="footer" id="download">
+  <footer class="footer">
     <div class="footer-inner">
       <div class="footer-top">
         <div class="footer-brand">
@@ -882,20 +975,25 @@
             <a href="terms.html">Terms of Service</a>
           </div>
           <div class="footer-download">
-            <a href="#" class="btn btn-primary">
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12 3 20.5zm13.81-5.38L6.05 21.34l8.76-8.76 2.38 2.38zm3.35-4.31c.34.27.59.69.59 1.19s-.21.9-.56 1.18l-2.1 1.21-2.41-2.41 2.41-2.41 2.1 1.21c.35.28.56.7.56 1.18zm-6.2-2.11l-2.41 2.41-2.1-1.21c-.35-.28-.56-.7-.56-1.18 0-.5.25-.92.59-1.19l2.1-1.21 2.41 2.41zM6.05 2.66l8.76 8.76 2.38-2.38-8.76-8.76L3 3.5c0 .59.34 1.11.84 1.35l2.21 1.01z"/>
-              </svg>
-              Download App
+            <a href="https://play.google.com/store/apps/details?id=com.ai.pdf.reader.android.app.year2026" target="_blank" rel="noopener" class="gp-badge gp-badge-sm" aria-label="Get it on Google Play">
+              <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
             </a>
           </div>
         </div>
       </div>
 
-      <p class="footer-legal copyright">© 2025 AI Pdf Reader. All rights reserved.</p>
+      <p class="footer-legal copyright">© 2026 AI Pdf Reader. All rights reserved.</p>
     </div>
   </footer>
   </div>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Feedback modal -->
   <div class="feedback-modal-overlay" id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" aria-hidden="true">
@@ -924,8 +1022,9 @@
       var canvas = document.getElementById('particle-canvas');
       var ctx = canvas.getContext('2d');
       var particles = [];
-      var particleCount = 160;
-      var linkDistance = 180;
+      var isMobile = window.innerWidth < 768;
+      var particleCount = isMobile ? 50 : 160;
+      var linkDistance = isMobile ? 120 : 180;
       var mouse = { x: null, y: null, r: 160 };
 
       function resize() {
@@ -1010,11 +1109,46 @@
       animate();
     })();
 
+    // Sticky header shadow
+    (function () {
+      var header = document.querySelector('.header');
+      if (!header) return;
+      window.addEventListener('scroll', function () {
+        header.classList.toggle('is-scrolled', window.scrollY > 10);
+      }, { passive: true });
+    })();
+
+    // Back to top
+    (function () {
+      var btn = document.getElementById('back-to-top');
+      if (!btn) return;
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('is-visible', window.scrollY > 400);
+      }, { passive: true });
+      btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    // Toast helper
+    function showToast(msg, duration) {
+      var toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('is-visible');
+      clearTimeout(toast._tid);
+      toast._tid = setTimeout(function () {
+        toast.classList.remove('is-visible');
+      }, duration || 3000);
+    }
+
+    // Feedback modal
     (function () {
       var overlay = document.getElementById('feedback-modal');
       var openBtn = document.getElementById('feedback-btn');
       var form = document.getElementById('feedback-form');
       var emailInput = document.getElementById('feedback-email');
+      var msgInput = document.getElementById('feedback-message');
       var emailError = document.getElementById('feedback-email-error');
       var closeBtn = overlay && overlay.querySelector('.feedback-modal-close');
 
@@ -1050,16 +1184,21 @@
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           var email = emailInput ? emailInput.value.trim() : '';
+          var message = msgInput ? msgInput.value.trim() : '';
           emailError.textContent = '';
           emailError.classList.remove('is-visible');
           if (!isValidEmail(email)) {
-            emailError.textContent = '请检查邮箱格式';
+            emailError.textContent = 'Please enter a valid email address';
             emailError.classList.add('is-visible');
             if (emailInput) emailInput.focus();
             return;
           }
+          var subject = encodeURIComponent('Feedback from AI Pdf Reader Website');
+          var body = encodeURIComponent('From: ' + email + '\n\n' + message);
+          window.open('mailto:liyanning0000@gmail.com?subject=' + subject + '&body=' + body, '_self');
           closeModal();
           form.reset();
+          showToast('Thank you for your feedback!');
         });
       }
 

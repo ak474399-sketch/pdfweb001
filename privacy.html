@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy – AI Pdf Reader</title>
+  <title>Privacy Policy – Document Editor - PDF Scanner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
@@ -12,10 +12,12 @@
       --bg: #0f0f12;
       --surface: #1a1a1f;
       --text: #f0f0f5;
-      --text-muted: #8b8b9a;
+      --text-muted: #a0a0b0;
       --accent: #6366f1;
+      --accent-light: #818cf8;
       --border: #2d2d35;
       --radius: 12px;
+      --link: #60a5fa;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -35,59 +37,160 @@
       border-bottom: 1px solid var(--border);
     }
     .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--text);
       text-decoration: none;
     }
-    .logo:hover { color: var(--accent); }
+    .logo:hover { color: var(--accent-light); }
+    .logo-img { height: 1.8rem; width: auto; object-fit: contain; }
     .main {
       max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2.5rem 2rem 4rem;
     }
     .main h1 {
-      font-size: 1.75rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
     }
-    .main .updated {
+    .updated {
       color: var(--text-muted);
       font-size: 0.9rem;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
     }
-    .doc-content {
+    .intro {
       color: var(--text-muted);
       font-size: 0.95rem;
+      margin-bottom: 1rem;
     }
-    .doc-content p { margin-bottom: 1rem; }
+    .notice {
+      background: rgba(99, 102, 241, 0.1);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .doc-content { font-size: 0.95rem; }
     .doc-content h2 {
       color: var(--text);
-      font-size: 1.1rem;
-      margin: 1.5rem 0 0.5rem;
+      font-size: 1.25rem;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
     }
+    .doc-content h2:first-child { margin-top: 0; }
+    .doc-content p {
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .doc-content strong { color: var(--text); }
     .doc-content ul {
       margin: 0.5rem 0 1rem 1.5rem;
+      color: var(--text-muted);
+    }
+    .doc-content li {
+      margin-bottom: 0.5rem;
+    }
+    .doc-content a {
+      color: var(--link);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .doc-content a:hover { text-decoration: underline; }
+    .sub-list {
+      list-style: disc;
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .sub-list li { margin-bottom: 0.35rem; }
+
+    @media (max-width: 600px) {
+      .main { padding: 1.5rem 1rem 3rem; }
+      .main h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <a href="index.html" class="logo">AI Pdf Reader</a>
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="AI Pdf Reader" class="logo-img" />
+      AI Pdf Reader
+    </a>
   </header>
 
   <main class="main">
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: January 2025</p>
+    <p class="updated"><strong>Last Updated: January 1, 2026</strong></p>
+    <p class="intro">Welcome to <strong>Document Editor - PDF Scanner</strong> (hereinafter referred to as "the App"). Your privacy is our top priority. We are committed to protecting your personal information and ensuring a secure user experience. This Privacy Policy explains how we collect, use, store, and protect your information when you use our application and related communications.</p>
+    <p class="notice"><strong>Please read this policy carefully.</strong> By using the App, you agree to the collection and use of information in accordance with this policy. If you do not agree, please do not use the App.</p>
 
-    <!-- Edit the content below. You can use <p>, <h2>, <ul>, <li>, etc. -->
+    <hr class="divider" />
+
     <div class="doc-content">
-      <p>We value your privacy. AI Pdf Reader processes documents locally on your device and does not upload your files to our servers without your consent. We may collect anonymous usage data to improve the product and do not share personally identifiable information with third parties. You can manage permissions and data in settings at any time.</p>
+      <h2>1. Data Collection and Use</h2>
+      <p><strong>Information You Provide</strong> &mdash; We collect information you voluntarily provide, such as feedback, suggestions, or account details (e.g., username and email address) when you interact with our support team.</p>
+      <p><strong>Automatic Data Collection</strong> &mdash; To improve performance and user experience, we automatically collect certain technical data:</p>
+      <ul>
+        <li><strong>Device Information:</strong> Device model, operating system version, and unique device identifiers (UID).</li>
+        <li><strong>Analytics:</strong> We use third-party tools to monitor traffic and usage trends.</li>
+        <li><strong>Log Data:</strong> In the event of an error, we collect "Log Data" which may include your IP address, device name, and the time/date of use.</li>
+      </ul>
 
-      <h2>Data we collect</h2>
-      <p>We may collect anonymous usage statistics (e.g. feature usage, crash reports) to improve the app. No document content or personally identifiable information is shared with third parties.</p>
+      <h2>2. App Permissions</h2>
+      <p>To provide document scanning and management services, the App requires the following permissions:</p>
+      <ul>
+        <li><strong>Camera:</strong> Used solely for scanning documents or images into PDF format.</li>
+        <li><strong>Storage / All Files Access:</strong> Essential for searching, categorizing, and editing your documents locally.</li>
+        <li><strong>Notifications:</strong> Used to send reminders and software updates.</li>
+        <li><strong>Foreground Service:</strong> Ensures that PDF generation tasks continue running stably in the background.</li>
+      </ul>
 
-      <h2>Your choices</h2>
-      <p>You can disable analytics in app settings and revoke storage permissions at any time through your device settings.</p>
+      <h2>3. Data Security and Local Processing</h2>
+      <p><strong>Your documents are private.</strong></p>
+      <ul>
+        <li><strong>Local Processing:</strong> All document processing and PDF conversions are performed <strong>locally on your device</strong>. We do not upload your files to our servers.</li>
+        <li><strong>No Sale of Data:</strong> We solemnly promise never to sell your personal information to third parties.</li>
+      </ul>
+
+      <h2>4. Third-Party Services</h2>
+      <p>We collaborate with the following partners for analytics and advertising. Their privacy policies are available at the following addresses:</p>
+      <ul>
+        <li><strong>Google Play Services / AdMob / Firebase:</strong> <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a></li>
+        <li><strong>Facebook / Meta:</strong> <a href="https://www.facebook.com/policy.php" target="_blank" rel="noopener">https://www.facebook.com/policy.php</a></li>
+        <li><strong>Adjust:</strong> <a href="https://www.adjust.com/privacy-policy/" target="_blank" rel="noopener">https://www.adjust.com/privacy-policy/</a></li>
+        <li><strong>AppLovin:</strong> <a href="https://www.applovin.com/privacy/" target="_blank" rel="noopener">https://www.applovin.com/privacy/</a></li>
+        <li><strong>Vungle:</strong> <a href="https://vungle.com/privacy/" target="_blank" rel="noopener">https://vungle.com/privacy/</a></li>
+        <li><strong>Pangle:</strong> <a href="https://www.pangleglobal.com/privacy" target="_blank" rel="noopener">https://www.pangleglobal.com/privacy</a></li>
+      </ul>
+
+      <h2>5. Data Deletion and Retention (User Rights)</h2>
+      <p>We respect your right to control your data. In compliance with Google Play's Data Safety requirements:</p>
+      <ul>
+        <li><strong>Data Deletion Requests:</strong> You may request the deletion of any personal data we have collected (such as your email or support history) at any time. To do so, please send an email to <strong>liyanning0000@gmail.com</strong> with the subject "Data Deletion Request." We will process and delete your data within 30 days.</li>
+        <li><strong>Local Data:</strong> Since your documents are stored locally on your device, deleting the App will remove all associated local data unless you have manually backed them up to your personal cloud storage.</li>
+        <li><strong>Retention:</strong> We only retain collected technical data for as long as necessary to provide service improvements and comply with legal obligations.</li>
+      </ul>
+
+      <h2>6. Age Restrictions</h2>
+      <p>Our services are not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
+
+      <h2>7. Updates to This Policy</h2>
+      <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+
+      <h2>8. Contact Us</h2>
+      <p>If you have any questions or concerns regarding your privacy or data deletion, please contact us:</p>
+      <p><strong>Email: <a href="mailto:liyanning0000@gmail.com">liyanning0000@gmail.com</a></strong></p>
     </div>
   </main>
 </body>

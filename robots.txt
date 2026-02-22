@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ak474399-sketch.github.io/pdf01-/sitemap.xml

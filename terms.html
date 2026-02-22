@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Service – AI Pdf Reader</title>
+  <title>Terms of Service – Document Editor - PDF Scanner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
@@ -12,10 +12,12 @@
       --bg: #0f0f12;
       --surface: #1a1a1f;
       --text: #f0f0f5;
-      --text-muted: #8b8b9a;
+      --text-muted: #a0a0b0;
       --accent: #6366f1;
+      --accent-light: #818cf8;
       --border: #2d2d35;
       --radius: 12px;
+      --link: #60a5fa;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -35,59 +37,154 @@
       border-bottom: 1px solid var(--border);
     }
     .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--text);
       text-decoration: none;
     }
-    .logo:hover { color: var(--accent); }
+    .logo:hover { color: var(--accent-light); }
+    .logo-img { height: 1.8rem; width: auto; object-fit: contain; }
     .main {
       max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2.5rem 2rem 4rem;
     }
     .main h1 {
-      font-size: 1.75rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
     }
-    .main .updated {
+    .updated {
       color: var(--text-muted);
       font-size: 0.9rem;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
     }
-    .doc-content {
+    .intro {
       color: var(--text-muted);
       font-size: 0.95rem;
+      margin-bottom: 1rem;
     }
-    .doc-content p { margin-bottom: 1rem; }
+    .notice {
+      background: rgba(99, 102, 241, 0.1);
+      border-left: 3px solid var(--accent);
+      padding: 0.8rem 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .doc-content { font-size: 0.95rem; }
     .doc-content h2 {
       color: var(--text);
-      font-size: 1.1rem;
-      margin: 1.5rem 0 0.5rem;
+      font-size: 1.25rem;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
     }
+    .doc-content h2:first-child { margin-top: 0; }
+    .doc-content p {
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .doc-content strong { color: var(--text); }
     .doc-content ul {
       margin: 0.5rem 0 1rem 1.5rem;
+      color: var(--text-muted);
+    }
+    .doc-content li {
+      margin-bottom: 0.5rem;
+    }
+    .doc-content a {
+      color: var(--link);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .doc-content a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .main { padding: 1.5rem 1rem 3rem; }
+      .main h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <a href="index.html" class="logo">AI Pdf Reader</a>
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="AI Pdf Reader" class="logo-img" />
+      AI Pdf Reader
+    </a>
   </header>
 
   <main class="main">
     <h1>Terms of Service</h1>
-    <p class="updated">Last updated: January 2025</p>
+    <p class="updated"><strong>Last Updated: January 1, 2026</strong></p>
+    <p class="intro">Welcome to <strong>Document Editor - PDF Scanner</strong> (hereinafter referred to as "the App"). These Terms of Service ("Terms") govern your use of the App. By downloading, installing, or using the App, you agree to be bound by these Terms.</p>
+    <p class="notice"><strong>Please read these terms carefully.</strong> If you do not agree to these Terms, please do not use the App.</p>
 
-    <!-- Edit the content below. You can use <p>, <h2>, <ul>, <li>, etc. -->
+    <hr class="divider" />
+
     <div class="doc-content">
-      <p>By using AI Pdf Reader you agree to these terms. The software is provided "as is" and we are not liable for any direct or indirect damages arising from its use. You must use the software lawfully and not for infringing others' intellectual property or violating applicable laws. We reserve the right to update these terms; continued use constitutes acceptance of the updated terms.</p>
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using the App, you confirm that you are at least 13 years of age and have the legal capacity to enter into these Terms. If you are using the App on behalf of an organization, you represent and warrant that you have the authority to bind that organization to these Terms.</p>
 
-      <h2>Acceptable use</h2>
-      <p>You may not use the app to process content that infringes copyright, invades privacy, or violates any applicable law. You are responsible for ensuring you have the right to scan, convert, or view the documents you use with the app.</p>
+      <h2>2. Description of the Service</h2>
+      <p>The App provides document scanning, PDF creation, file conversion, PDF reading, annotation, and management features. All document processing is performed <strong>locally on your device</strong>. The specific features and functionality may be updated or changed from time to time at our discretion.</p>
 
-      <h2>Changes</h2>
-      <p>We may update these terms from time to time. The "Last updated" date at the top will be revised when changes are made. Continued use of the app after changes constitutes acceptance of the new terms.</p>
+      <h2>3. User Accounts and Responsibilities</h2>
+      <ul>
+        <li>You are responsible for maintaining the confidentiality of any account credentials associated with the App.</li>
+        <li>You agree to use the App only for lawful purposes and in compliance with all applicable laws and regulations.</li>
+        <li>You shall not use the App to process, distribute, or store any content that infringes upon the intellectual property rights of third parties.</li>
+        <li>You are solely responsible for any documents, files, or data you create, modify, or manage through the App.</li>
+      </ul>
+
+      <h2>4. Intellectual Property</h2>
+      <p>All rights, title, and interest in and to the App, including but not limited to software code, design, logos, trademarks, and other intellectual property, are owned by us or our licensors. These Terms do not grant you any right to use our trademarks, logos, or brand names.</p>
+      <p>You retain all ownership rights to your documents and files. We do not claim any ownership over content you create or process using the App.</p>
+
+      <h2>5. In-App Purchases and Subscriptions</h2>
+      <ul>
+        <li>The App may offer in-app purchases or subscription plans for premium features.</li>
+        <li>All purchases are processed through the Google Play Store and are subject to Google Play's terms and refund policies.</li>
+        <li>Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current billing period.</li>
+        <li>You can manage or cancel your subscriptions through your Google Play account settings.</li>
+      </ul>
+
+      <h2>6. Advertising</h2>
+      <p>The App may display advertisements provided by third-party advertising networks, including but not limited to Google AdMob, AppLovin, Vungle, and Pangle. These third-party services may collect and use certain data in accordance with their own privacy policies. Please refer to our <a href="privacy.html">Privacy Policy</a> for more details.</p>
+
+      <h2>7. Disclaimer of Warranties</h2>
+      <p>The App is provided on an <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> basis, without warranties of any kind, either express or implied. We do not warrant that:</p>
+      <ul>
+        <li>The App will be uninterrupted, error-free, or free of viruses or other harmful components.</li>
+        <li>The results obtained from using the App will be accurate or reliable.</li>
+        <li>Any defects in the App will be corrected.</li>
+      </ul>
+
+      <h2>8. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by applicable law, we shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of data, loss of profits, or business interruption, arising out of or in connection with your use of the App.</p>
+      <p>Our total liability for any claim related to the App shall not exceed the amount you paid (if any) for the App in the 12 months preceding the claim.</p>
+
+      <h2>9. Termination</h2>
+      <p>We reserve the right to suspend or terminate your access to the App at any time, with or without cause, and with or without notice. Upon termination, your right to use the App will immediately cease. All provisions of these Terms which by their nature should survive termination shall survive.</p>
+
+      <h2>10. Changes to These Terms</h2>
+      <p>We may revise these Terms from time to time. When we do, we will update the "Last Updated" date at the top of this page. Your continued use of the App after any changes constitutes your acceptance of the revised Terms.</p>
+
+      <h2>11. Governing Law</h2>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the People's Republic of China, without regard to its conflict of law provisions.</p>
+
+      <h2>12. Contact Us</h2>
+      <p>If you have any questions about these Terms, please contact us:</p>
+      <p><strong>Email: <a href="mailto:liyanning0000@gmail.com">liyanning0000@gmail.com</a></strong></p>
     </div>
   </main>
 </body>
