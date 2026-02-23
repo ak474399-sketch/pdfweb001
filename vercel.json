@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/assets/scanpdf.JPG", "destination": "/assets/scanpdf.jpg", "permanent": true }
+  ],
+  "cleanUrls": true
+}
